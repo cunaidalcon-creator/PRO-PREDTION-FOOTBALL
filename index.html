@@ -1,64 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>ProPredictions — Futebol Inteligente</title>
-    <meta name="theme-color" content="#000000" />
-    <link rel="icon" href="favicon.ico" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;800&display=swap" rel="stylesheet" />
-    <script type="importmap">
-      {
-        "imports": {
-          "dayjs": "https://esm.sh/dayjs@1.11.11",
-          "dayjs/plugin/utc": "https://esm.sh/dayjs@1.11.11/plugin/utc",
-          "dayjs/plugin/timezone": "https://esm.sh/dayjs@1.11.11/plugin/timezone",
-          "chart.js": "https://esm.sh/chart.js@4.4.3",
-          "nanoid": "https://esm.sh/nanoid@5.0.7"
-        }
-      }
-    </script>
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <div id="app">
-      <header class="topbar">
-        <div class="brand">
-          <div class="flag"></div>
-          <span>ProPredictions</span>
-        </div>
-        <div class="top-actions">
-          <button id="vipBadge" class="badge">VIP</button>
-          <button id="notifyBtn" class="icon-btn" title="Ativar notificações">🔔</button>
-        </div>
-      </header>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRO PREDICTION FOOTBALL</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <header>
+    <h1>⚽ PRO PREDICTION FOOTBALL</h1>
+    <p>Resultados e partidas reais atualizadas</p>
+  </header>
 
-      <nav class="tabs" id="tabs">
-        <button data-view="dashboard" class="tab active">Início</button>
-        <button data-view="today" class="tab">Hoje</button>
-        <button data-view="upcoming" class="tab">Próximos</button>
-        <button data-view="live" class="tab">Ao Vivo</button>
-        <button data-view="results" class="tab">Resultados</button>
-        <button data-view="leagues" class="tab">Ligas</button>
-        <button data-view="vip" class="tab">VIP</button>
-        <button data-view="pagamentos" class="tab">Pagamentos</button>
-      </nav>
+  <main>
+    <section id="jogos">
+      <h2>Partidas de hoje</h2>
+      <div id="lista-jogos">Carregando jogos reais...</div>
+    </section>
+  </main>
 
-      <main id="view"></main>
+  <footer>
+    <p>© 2025 Pro Prediction Football — Dados reais via Football-Data.org</p>
+  </footer>
 
-      <footer class="footer">
-        <div class="legal">
-          <p>
-            Previsões e estatísticas para fins informativos. Jogue com responsabilidade.
-          </p>
-          <p>
-            Contacto: suporte@propredictions.app — Proprietário: Edilson Cuna
-          </p>
-        </div>
-      </footer>
-    </div>
-
+  <script src="main.js"></script>
+</body>
+</html>
     <div id="modalRoot"></div>
 
     <script type="module" src="./data.js"></script>
