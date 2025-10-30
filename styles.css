@@ -1,38 +1,39 @@
-:root {
-  --bg: #ffffff;
-  --text: #111111;
-  --muted: #6b7280;
-  --border: #e5e7eb;
-  --accent: #111111;
-  --success: #16a34a;
-  --danger: #dc2626;
-  --warning: #f59e0b;
-  --card: #fafafa;
-}
-* { box-sizing: border-box; }
-html, body, #app { height: 100%; }
 body {
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+  color: #222;
   margin: 0;
-  font-family: "Noto Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background:
-    linear-gradient(180deg,#009e49 0 33%,#fff 33% 36%,#000 36% 64%,#fff 64% 67%,#ffce00 67% 100%),
-    conic-gradient(from 270deg at 0 50%, #d21034 0 90deg, transparent 90deg 360deg);
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  color: var(--text);
+  padding: 0;
+  text-align: center;
 }
-.topbar {
-  position: sticky; top: 0; z-index: 20;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 12px 16px; border-bottom: 1px solid var(--border); background: transparent;
+
+header {
+  background: #0052cc;
+  color: white;
+  padding: 20px;
 }
-.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: 0.2px; }
-.flag { width: 22px; height: 22px; border-radius: 3px; background:
-  linear-gradient(180deg,#ff0000 0 33%,#009e49 33% 66%,#ffce00 66%); border: 1px solid #00000010; }
-.top-actions { display: flex; align-items: center; gap: 8px; }
-.icon-btn, .badge, .btn {
-  border: 1px solid var(--border); background: #fff; color: var(--text);
-  padding: 8px 12px; border-radius: 10px; cursor: pointer; transition: transform .08s ease, background .2s;
+
+h1 {
+  margin-bottom: 5px;
+}
+
+section {
+  margin: 20px;
+}
+
+.jogo {
+  background: white;
+  padding: 15px;
+  margin: 10px auto;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+}
+
+footer {
+  background: #eee;
+  padding: 10px;
+  margin-top: 20px;
 }
 .icon-btn { padding: 6px 10px; }
 .icon-btn:hover, .btn:hover, .badge:hover { background: #f5f5f5; }
