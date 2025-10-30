@@ -1,39 +1,54 @@
-const API_TOKEN = "SUA_CHAVE_AQUI"; // m7eaecbe7643147058d260ea4a5a8e3f7antém sua chave
-const API_URL = "https://api.football-data.org/v4/matches";
+// Usa a tua nova chave da API-Sports
+const API_KEY = " 7eaecbe7643147058d260ea4a5a8e3f7"; 
 
-// PROXY GRATUITO para evitar erro de CORS
-const PROXY_URL = "https://api.allorigins.win/get?url=" + encodeURIComponent(API_URL);
+const url = "https://v3.football.api-sports.io/fixtures?date=2025-10-30";
 
 async function carregarJogos() {
   const container = document.getElementById("lista-jogos");
-  container.innerHTML = "<p>Carregando dados reais...</p>";
+  container.innerHTML = "<p>Carregando jogos reais...</p>";
 
   try {
-    const response = await fetch(PROXY_URL, {
-      headers: { "X-Auth-Token": API_TOKEN }
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "x-apisports-key": API_KEY,
+        "x-rapidapi-host": "v3.football.api-sports.io"
+      }
     });
 
-    if (!response.ok) throw new Error("Erro ao buscar dados");
+    if (!response.ok) throw new Error("Erro na API");
 
-    const wrappedData = await response.json();
-    const data = JSON.parse(wrappedData.contents);
-    const matches = data.matches;
+    const data = await response.json();
+    const jogos = data.response;
 
-    if (!matches || matches.length === 0) {
+    if (jogos.length === 0) {
       container.innerHTML = "<p>Nenhuma partida encontrada hoje.</p>";
       return;
     }
 
     container.innerHTML = "";
-    matches.slice(0, 10).forEach(match => {
+    jogos.slice(0, 10).forEach(jogo => {
+      const home = jogo.teams.home.name;
+      const away = jogo.teams.away.name;
+      const status = jogo.fixture.status.short;
+      const liga = jogo.league.name;
+
       const item = document.createElement("div");
       item.classList.add("jogo");
+      item.innerHTML = `
+        <h3>${home} 🆚 ${away}</h3>
+        <p><strong>Competição:</strong> ${liga}</p>
+        <p><strong>Status:</strong> ${status}</p>
+      `;
+      container.appendChild(item);
+    });
+  } catch (error) {
+    console.error(error);
+    container.innerHTML = "<p>Erro ao carregar jogos reais. Tente novamente mais tarde.</p>";
+  }
+}
 
-      const home = match.homeTeam.name;
-      const away = match.awayTeam.name;
-      const status = match.status;
-      const competition = match.competition.name;
-
+carregarJogos();
       item.innerHTML = `
         <h3>${home} 🆚 ${away}</h3>
         <p><strong>Competição:</strong> ${competition}</p>
