@@ -1,24 +1,25 @@
-// Subst7eaecbe7643147058d260ea4a5a8e3f7itui pelo seu Token da API Football-Data.org
-const API_TOKEN = "SUA_CHAVE_AQUI"; // Exemplo: "1a2b3c4d5e6f7g8h"
-
-// Endpoint: jogos do dia
+const API_TOKEN = "SUA_CHAVE_AQUI"; // m7eaecbe7643147058d260ea4a5a8e3f7antém sua chave
 const API_URL = "https://api.football-data.org/v4/matches";
+
+// PROXY GRATUITO para evitar erro de CORS
+const PROXY_URL = "https://api.allorigins.win/get?url=" + encodeURIComponent(API_URL);
 
 async function carregarJogos() {
   const container = document.getElementById("lista-jogos");
   container.innerHTML = "<p>Carregando dados reais...</p>";
 
   try {
-    const response = await fetch(API_URL, {
+    const response = await fetch(PROXY_URL, {
       headers: { "X-Auth-Token": API_TOKEN }
     });
 
     if (!response.ok) throw new Error("Erro ao buscar dados");
 
-    const data = await response.json();
+    const wrappedData = await response.json();
+    const data = JSON.parse(wrappedData.contents);
     const matches = data.matches;
 
-    if (matches.length === 0) {
+    if (!matches || matches.length === 0) {
       container.innerHTML = "<p>Nenhuma partida encontrada hoje.</p>";
       return;
     }
@@ -34,6 +35,19 @@ async function carregarJogos() {
       const competition = match.competition.name;
 
       item.innerHTML = `
+        <h3>${home} 🆚 ${away}</h3>
+        <p><strong>Competição:</strong> ${competition}</p>
+        <p><strong>Status:</strong> ${status}</p>
+      `;
+      container.appendChild(item);
+    });
+  } catch (error) {
+    console.error(error);
+    container.innerHTML = "<p>Erro ao carregar jogos reais. Tente novamente mais tarde.</p>";
+  }
+}
+
+carregarJogos();
         <h3>${home} 🆚 ${away}</h3>
         <p><strong>Competição:</strong> ${competition}</p>
         <p><strong>Status:</strong> ${status}</p>
