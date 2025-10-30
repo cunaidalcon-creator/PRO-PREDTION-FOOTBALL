@@ -1,14 +1,20 @@
-// Usa a tua nova chave da API-Sports
-const API_KEY = " 7eaecbe7643147058d260ea4a5a8e3f7"; 
+// =====================
+// PRO PREDICTION FOOTBALL
+// Dados reais via API-SPORTS (com proxy CORS)
+// =====================
 
-const url = "https://v3.football.api-sports.io/fixtures?date=2025-10-30";
+const API_KEY = " 7eaecbe7643147058d260ea4a5a8e3f7"; // tua chave real
+const API_URL = "https://v3.football.api-sports.io/fixtures?date=2025-10-30";
+
+// proxy gratuito para evitar bloqueio CORS
+const PROXY = "https://corsproxy.io/?";
 
 async function carregarJogos() {
   const container = document.getElementById("lista-jogos");
-  container.innerHTML = "<p>Carregando jogos reais...</p>";
+  container.innerHTML = "<p>⚽ Carregando jogos reais... Aguarde ⏳</p>";
 
   try {
-    const response = await fetch(url, {
+    const response = await fetch(PROXY + API_URL, {
       method: "GET",
       headers: {
         "x-apisports-key": API_KEY,
@@ -21,7 +27,7 @@ async function carregarJogos() {
     const data = await response.json();
     const jogos = data.response;
 
-    if (jogos.length === 0) {
+    if (!jogos || jogos.length === 0) {
       container.innerHTML = "<p>Nenhuma partida encontrada hoje.</p>";
       return;
     }
@@ -34,6 +40,21 @@ async function carregarJogos() {
       const liga = jogo.league.name;
 
       const item = document.createElement("div");
+      item.classList.add("jogo");
+      item.innerHTML = `
+        <h3>${home} 🆚 ${away}</h3>
+        <p><strong>Competição:</strong> ${liga}</p>
+        <p><strong>Status:</strong> ${status}</p>
+      `;
+      container.appendChild(item);
+    });
+  } catch (error) {
+    console.error(error);
+    container.innerHTML = "<p>Erro ao carregar jogos reais. Tente novamente mais tarde.</p>";
+  }
+}
+
+carregarJogos();
       item.classList.add("jogo");
       item.innerHTML = `
         <h3>${home} 🆚 ${away}</h3>
