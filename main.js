@@ -1,4 +1,4 @@
-// Substitui pelo seu Token da API Football-Data.org
+// Subst7eaecbe7643147058d260ea4a5a8e3f7itui pelo seu Token da API Football-Data.org
 const API_TOKEN = "SUA_CHAVE_AQUI"; // Exemplo: "1a2b3c4d5e6f7g8h"
 
 // Endpoint: jogos do dia
