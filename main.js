@@ -1,39 +1,52 @@
-import dayjs from "dayjs";
-import { generateFixtures, simulateLiveTick, CountriesAndLeagues, computeHitRate } from "./data.js";
-import { getAIInsight } from "./llm.js";
-import { Chart } from "chart.js";
+// Substitui pelo seu Token da API Football-Data.org
+const API_TOKEN = "SUA_CHAVE_AQUI"; // Exemplo: "1a2b3c4d5e6f7g8h"
 
-const state = {
-  fixtures: generateFixtures(6),
-  view: "dashboard",
-  filters: { league: "Todas", country: "Todos", vipOnly: false, market: "Todos" },
-  vip: JSON.parse(localStorage.getItem("vip")) || { active: false, name: "Edilson Cuna" },
-  savedPreds: JSON.parse(localStorage.getItem("preds")) || [], // {id, pick: { "1X2": "1", O_U: "Over 2.5", BTTS: "BTTS: SIM" }}
-  accuracy: { total: 0, hits: 0, pct: 0 },
-};
+// Endpoint: jogos do dia
+const API_URL = "https://api.football-data.org/v4/matches";
 
-const viewEl = document.getElementById("view");
-const tabsEl = document.getElementById("tabs");
-const vipBadge = document.getElementById("vipBadge");
+async function carregarJogos() {
+  const container = document.getElementById("lista-jogos");
+  container.innerHTML = "<p>Carregando dados reais...</p>";
 
-function setView(v) {
-  state.view = v;
-  [...tabsEl.querySelectorAll(".tab")].forEach((b) => b.classList.toggle("active", b.dataset.view === v));
-  render();
+  try {
+    const response = await fetch(API_URL, {
+      headers: { "X-Auth-Token": API_TOKEN }
+    });
+
+    if (!response.ok) throw new Error("Erro ao buscar dados");
+
+    const data = await response.json();
+    const matches = data.matches;
+
+    if (matches.length === 0) {
+      container.innerHTML = "<p>Nenhuma partida encontrada hoje.</p>";
+      return;
+    }
+
+    container.innerHTML = "";
+    matches.slice(0, 10).forEach(match => {
+      const item = document.createElement("div");
+      item.classList.add("jogo");
+
+      const home = match.homeTeam.name;
+      const away = match.awayTeam.name;
+      const status = match.status;
+      const competition = match.competition.name;
+
+      item.innerHTML = `
+        <h3>${home} 🆚 ${away}</h3>
+        <p><strong>Competição:</strong> ${competition}</p>
+        <p><strong>Status:</strong> ${status}</p>
+      `;
+      container.appendChild(item);
+    });
+  } catch (error) {
+    console.error(error);
+    container.innerHTML = "<p>Erro ao carregar jogos reais. Tente novamente mais tarde.</p>";
+  }
 }
 
-tabsEl.addEventListener("click", (e) => {
-  const b = e.target.closest("button[data-view]");
-  if (b) setView(b.dataset.view);
-});
-
-vipBadge.addEventListener("click", () => setView("vip"));
-
-function formatKick(t) { return dayjs(t).format("DD/MM HH:mm"); }
-function isToday(t) { return dayjs(t).isSame(dayjs(), "day"); }
-function isFuture(t) { return dayjs(t).isAfter(dayjs(), "day") || (dayjs(t).isSame(dayjs(), "day") && dayjs(t).isAfter(dayjs())); }
-function isYesterday(t) { return dayjs(t).isSame(dayjs().subtract(1,"day"), "day"); }
-
+carregarJogos();
 function filterFixtures(scope) {
   return state.fixtures.filter((m) => {
     if (scope === "today" && !isToday(m.kickoff)) return false;
